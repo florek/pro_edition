@@ -1103,6 +1103,20 @@ body.lang-pl [data-lang="en"]:not(.lang-switch__btn) {
   min-width: 10rem;
 }
 
+.btn--github,
+.btn--linkedin {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.github-icon,
+.linkedin-icon {
+  flex-shrink: 0;
+  width: 20px;
+  height: 20px;
+}
+
 .contact__company-data {
   margin-top: 2rem;
   padding-top: 2rem;
