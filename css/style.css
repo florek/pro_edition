@@ -172,10 +172,26 @@ body {
   font-weight: 500;
   font-size: 0.9rem;
   transition: color 0.2s;
+  position: relative;
 }
 
 .nav__link:hover {
   color: var(--accent-blue);
+}
+
+.nav__link.is-active {
+  color: var(--accent-blue);
+}
+
+.nav__link.is-active::after {
+  content: '';
+  position: absolute;
+  bottom: -4px;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: var(--accent-blue);
+  border-radius: 1px;
 }
 
 .burger {
@@ -352,6 +368,22 @@ body.lang-pl [data-lang="en"]:not(.lang-switch__btn) {
     display: block;
     border-bottom: 1px solid var(--border);
     font-weight: 500;
+  }
+
+  .nav__link.is-active {
+    color: var(--accent-blue);
+  }
+
+  .nav__link.is-active::after {
+    content: '';
+    position: absolute;
+    left: -1.5rem;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 3px;
+    height: 60%;
+    background: var(--accent-blue);
+    border-radius: 0 2px 2px 0;
   }
 
   .nav__link:last-of-type {

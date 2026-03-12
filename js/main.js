@@ -92,60 +92,131 @@
 
   (function() {
     const sections = Array.from(document.querySelectorAll('section[id]'));
+    const navLinks = Array.from(document.querySelectorAll('.nav__link'));
     if (sections.length === 0) return;
     let isScrolling = false;
-    let scrollTimeout = null;
-    const SCROLL_THRESHOLD = 50;
-    const SCROLL_DEBOUNCE = 100;
+    let lastWheelTime = 0;
+    let wheelAccumulator = 0;
+    const SCROLL_THRESHOLD = 100;
+    const WHEEL_ACCUMULATOR_THRESHOLD = 30;
+    const WHEEL_RESET_TIME = 150;
 
     function getCurrentSection() {
       const scrollY = window.scrollY || window.pageYOffset;
       const viewportHeight = window.innerHeight;
-      const scrollBottom = scrollY + viewportHeight;
+      const headerHeight = document.querySelector('.header-wrap')?.offsetHeight || 0;
+      const viewportTop = scrollY + headerHeight + 100;
+      const viewportBottom = scrollY + viewportHeight;
+      let bestMatch = null;
+      let bestScore = -Infinity;
       for (let i = 0; i < sections.length; i++) {
         const section = sections[i];
         const rect = section.getBoundingClientRect();
         const sectionTop = rect.top + scrollY;
         const sectionBottom = sectionTop + rect.height;
-        if (scrollY >= sectionTop - viewportHeight * 0.3 && scrollY < sectionBottom - viewportHeight * 0.3) {
-          return { section: section, index: i, top: sectionTop, bottom: sectionBottom };
+        const sectionVisibleTop = Math.max(sectionTop, viewportTop);
+        const sectionVisibleBottom = Math.min(sectionBottom, viewportBottom);
+        const visibleHeight = Math.max(0, sectionVisibleBottom - sectionVisibleTop);
+        const totalHeight = sectionBottom - sectionTop;
+        if (visibleHeight > 0) {
+          const visibilityRatio = visibleHeight / totalHeight;
+          const centerDistance = Math.abs((sectionTop + sectionBottom) / 2 - (viewportTop + viewportBottom) / 2);
+          const score = visibilityRatio * 1000 - centerDistance / 10;
+          if (score > bestScore) {
+            bestScore = score;
+            bestMatch = { section: section, index: i, top: sectionTop, bottom: sectionBottom, height: totalHeight };
+          }
         }
       }
-      return null;
+      if (!bestMatch && sections.length > 0) {
+        const firstSection = sections[0];
+        const lastSection = sections[sections.length - 1];
+        const firstRect = firstSection.getBoundingClientRect();
+        const lastRect = lastSection.getBoundingClientRect();
+        if (scrollY + viewportHeight * 0.5 < firstRect.top + scrollY) {
+          bestMatch = { section: firstSection, index: 0, top: firstRect.top + scrollY, bottom: firstRect.bottom + scrollY, height: firstRect.height };
+        } else if (scrollY + viewportHeight * 0.5 > lastRect.bottom + scrollY) {
+          bestMatch = { section: lastSection, index: sections.length - 1, top: lastRect.top + scrollY, bottom: lastRect.bottom + scrollY, height: lastRect.height };
+        }
+      }
+      return bestMatch;
     }
 
-    function canScrollDown(current) {
-      if (!current) return false;
+    function canScrollInDirection(current, direction) {
+      if (!current) return true;
       const scrollY = window.scrollY || window.pageYOffset;
       const viewportHeight = window.innerHeight;
       const documentHeight = document.documentElement.scrollHeight;
       const maxScroll = documentHeight - viewportHeight;
-      const currentScrollBottom = scrollY + viewportHeight;
-      const sectionScrollBottom = current.bottom;
-      return currentScrollBottom < sectionScrollBottom - SCROLL_THRESHOLD && scrollY < maxScroll;
-    }
-
-    function canScrollUp(current) {
-      if (!current) return false;
-      const scrollY = window.scrollY || window.pageYOffset;
-      const sectionScrollTop = current.top;
-      return scrollY > sectionScrollTop + SCROLL_THRESHOLD;
+      const isNearTop = scrollY < 50;
+      const isNearBottom = scrollY >= maxScroll - 50;
+      if (direction > 0) {
+        if (isNearBottom) return true;
+        const scrollBottom = scrollY + viewportHeight;
+        const sectionBottom = current.bottom;
+        return scrollBottom < sectionBottom - SCROLL_THRESHOLD;
+      } else {
+        if (isNearTop) return true;
+        if (isNearBottom) return true;
+        if (scrollY <= 0) return false;
+        const sectionTop = current.top;
+        const headerHeight = document.querySelector('.header-wrap')?.offsetHeight || 0;
+        const distanceFromSectionTop = scrollY - sectionTop;
+        if (distanceFromSectionTop <= SCROLL_THRESHOLD) {
+          return false;
+        }
+        return true;
+      }
     }
 
     function scrollToSection(index, behavior) {
       if (index < 0 || index >= sections.length) return;
       const section = sections[index];
-      const rect = section.getBoundingClientRect();
       const headerHeight = document.querySelector('.header-wrap')?.offsetHeight || 0;
-      const targetY = rect.top + window.scrollY - headerHeight;
+      const title = section.querySelector('.section__title');
+      let targetY;
+      if (title) {
+        const sectionRect = section.getBoundingClientRect();
+        const titleRect = title.getBoundingClientRect();
+        const titleOffsetFromSectionTop = titleRect.top - sectionRect.top;
+        targetY = sectionRect.top + window.scrollY + titleOffsetFromSectionTop - headerHeight - 20;
+      } else {
+        const rect = section.getBoundingClientRect();
+        targetY = rect.top + window.scrollY - headerHeight - 20;
+      }
       isScrolling = true;
       window.scrollTo({
         top: Math.max(0, targetY),
         behavior: behavior || 'smooth'
       });
-      setTimeout(function() {
+      if (behavior === 'smooth') {
+        setTimeout(function() {
+          isScrolling = false;
+          updateActiveNavLink();
+        }, 600);
+      } else {
         isScrolling = false;
-      }, 500);
+        updateActiveNavLink();
+      }
+    }
+
+    let lastActiveSectionId = null;
+    let scrollUpdateTimeout = null;
+
+    function updateActiveNavLink() {
+      const current = getCurrentSection();
+      if (!current) return;
+      const sectionId = current.section.id;
+      if (sectionId === lastActiveSectionId) return;
+      lastActiveSectionId = sectionId;
+      navLinks.forEach(function(link) {
+        const href = link.getAttribute('href');
+        if (href === '#' + sectionId) {
+          link.classList.add('is-active');
+        } else {
+          link.classList.remove('is-active');
+        }
+      });
     }
 
     function handleWheel(e) {
@@ -153,34 +224,89 @@
         e.preventDefault();
         return;
       }
-      if (scrollTimeout) {
-        clearTimeout(scrollTimeout);
+      const scrollY = window.scrollY || window.pageYOffset;
+      const viewportHeight = window.innerHeight;
+      const documentHeight = document.documentElement.scrollHeight;
+      const maxScroll = documentHeight - viewportHeight;
+      const isNearTop = scrollY < 50;
+      const isNearBottom = scrollY >= maxScroll - 50;
+      if (isNearTop && e.deltaY < 0) return;
+      if (isNearBottom && e.deltaY > 0) return;
+      const now = Date.now();
+      if (now - lastWheelTime > WHEEL_RESET_TIME) {
+        wheelAccumulator = 0;
       }
-      scrollTimeout = setTimeout(function() {
-        const current = getCurrentSection();
-        if (!current) return;
-        const deltaY = e.deltaY;
-        if (deltaY > 0) {
-          if (!canScrollDown(current)) {
+      lastWheelTime = now;
+      wheelAccumulator += Math.abs(e.deltaY);
+      if (wheelAccumulator < WHEEL_ACCUMULATOR_THRESHOLD) {
+        return;
+      }
+      const current = getCurrentSection();
+      if (!current) return;
+      const deltaY = e.deltaY;
+      if (deltaY > 0) {
+        if (!canScrollInDirection(current, 1)) {
+          if (current.index + 1 < sections.length) {
             e.preventDefault();
+            wheelAccumulator = 0;
             scrollToSection(current.index + 1, 'smooth');
           }
-        } else if (deltaY < 0) {
-          if (!canScrollUp(current)) {
+        }
+      } else if (deltaY < 0) {
+        if (!canScrollInDirection(current, -1)) {
+          if (current.index - 1 >= 0) {
             e.preventDefault();
+            wheelAccumulator = 0;
             scrollToSection(current.index - 1, 'smooth');
           }
         }
-      }, SCROLL_DEBOUNCE);
+      }
+    }
+
+    function handleScroll() {
+      if (scrollUpdateTimeout) {
+        clearTimeout(scrollUpdateTimeout);
+      }
+      scrollUpdateTimeout = setTimeout(function() {
+        updateActiveNavLink();
+      }, 10);
+    }
+
+    function handleNavLinkClick(e) {
+      const link = e.target.closest('.nav__link');
+      if (!link) return;
+      const href = link.getAttribute('href');
+      if (!href || !href.startsWith('#')) return;
+      const sectionId = href.substring(1);
+      const sectionIndex = sections.findIndex(function(s) {
+        return s.id === sectionId;
+      });
+      if (sectionIndex >= 0) {
+        e.preventDefault();
+        if (nav && nav.classList.contains('is-open')) {
+          closeMenu();
+        }
+        scrollToSection(sectionIndex, 'smooth');
+      }
     }
 
     let wheelHandler = null;
+    let scrollHandler = null;
     function initSnapScroll() {
       if (wheelHandler) {
         window.removeEventListener('wheel', wheelHandler, { passive: false });
       }
+      if (scrollHandler) {
+        window.removeEventListener('scroll', scrollHandler);
+      }
       wheelHandler = handleWheel;
+      scrollHandler = handleScroll;
       window.addEventListener('wheel', wheelHandler, { passive: false });
+      window.addEventListener('scroll', scrollHandler, { passive: true });
+      document.querySelectorAll('.nav__link').forEach(function(link) {
+        link.addEventListener('click', handleNavLinkClick);
+      });
+      updateActiveNavLink();
     }
 
     if (document.readyState === 'loading') {
