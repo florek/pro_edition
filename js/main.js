@@ -333,4 +333,35 @@
       initSnapScroll();
     }
   })();
+
+  (function() {
+    const heroContent = document.querySelector('.hero__content');
+    if (heroContent) {
+      const heroChildren = heroContent.querySelectorAll('*');
+      heroChildren.forEach(function(el, index) {
+        el.classList.add('fade-in');
+        setTimeout(function() {
+          el.classList.add('is-visible');
+        }, 100 + index * 100);
+      });
+    }
+    const animatedElements = document.querySelectorAll('.section:not(.hero), .card, .value-block, .tech-block');
+    if (animatedElements.length === 0) return;
+    const observerOptions = {
+      threshold: 0.1,
+      rootMargin: '0px 0px -50px 0px'
+    };
+    const observer = new IntersectionObserver(function(entries) {
+      entries.forEach(function(entry) {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('is-visible');
+          observer.unobserve(entry.target);
+        }
+      });
+    }, observerOptions);
+    animatedElements.forEach(function(el) {
+      el.classList.add('fade-in');
+      observer.observe(el);
+    });
+  })();
 })();
