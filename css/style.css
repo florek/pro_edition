@@ -799,25 +799,34 @@ body.lang-pl [data-lang="en"]:not(.lang-switch__btn) {
 
 .founder-intro {
   display: flex;
-  align-items: center;
-  gap: 1rem;
-  margin-bottom: 1rem;
+  align-items: flex-start;
+  gap: 1.25rem;
+  margin-bottom: 2rem;
+  padding-bottom: 2rem;
+  border-bottom: 1px solid var(--border);
 }
 
 .founder-photo {
-  width: 96px;
-  height: 96px;
-  min-width: 96px;
-  border-radius: 50%;
+  width: 64px;
+  height: 64px;
+  min-width: 64px;
+  border-radius: 8px;
   object-fit: cover;
-  border: 2px solid var(--border);
+  border: 1px solid var(--border);
+  opacity: 0.9;
 }
 
 .founder-name {
   font-family: var(--font-display);
-  font-size: 1.25rem;
+  font-size: 1.1rem;
   font-weight: 600;
-  color: var(--accent-blue);
+  color: var(--text);
+  margin: 0 0 0.25rem 0;
+}
+
+.founder-role {
+  font-size: 0.9rem;
+  color: var(--text-muted);
   margin: 0;
 }
 
@@ -927,11 +936,16 @@ body.lang-pl [data-lang="en"]:not(.lang-switch__btn) {
 }
 
 .card__scope li {
-  padding-left: 0;
+  padding-left: 1.5rem;
+  position: relative;
 }
 
 .card__scope li::before {
-  content: none;
+  content: '✓';
+  position: absolute;
+  left: 0;
+  color: var(--accent-blue);
+  font-weight: 600;
 }
 
 .card__meta {

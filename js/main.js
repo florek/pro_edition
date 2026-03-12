@@ -98,9 +98,9 @@
     let isScrolling = false;
     let lastWheelTime = 0;
     let wheelAccumulator = 0;
-    const SCROLL_THRESHOLD = 100;
-    const WHEEL_ACCUMULATOR_THRESHOLD = 30;
-    const WHEEL_RESET_TIME = 150;
+    const SCROLL_THRESHOLD = 20;
+    const WHEEL_ACCUMULATOR_THRESHOLD = 80;
+    const WHEEL_RESET_TIME = 300;
 
     function getCurrentSection() {
       const scrollY = window.scrollY || window.pageYOffset;
@@ -149,21 +149,21 @@
       const viewportHeight = window.innerHeight;
       const documentHeight = document.documentElement.scrollHeight;
       const maxScroll = documentHeight - viewportHeight;
-      const isNearTop = scrollY < 50;
-      const isNearBottom = scrollY >= maxScroll - 50;
+      const isNearTop = scrollY < 20;
+      const isNearBottom = scrollY >= maxScroll - 20;
       if (direction > 0) {
         if (isNearBottom) return true;
         const scrollBottom = scrollY + viewportHeight;
         const sectionBottom = current.bottom;
-        return scrollBottom < sectionBottom - SCROLL_THRESHOLD;
+        return scrollBottom < sectionBottom - 20;
       } else {
         if (isNearTop) return true;
         if (isNearBottom) return true;
-        if (scrollY <= 0) return false;
+        if (scrollY <= 0) return true;
         const sectionTop = current.top;
         const headerHeight = document.querySelector('.header-wrap')?.offsetHeight || 0;
         const distanceFromSectionTop = scrollY - sectionTop;
-        if (distanceFromSectionTop <= SCROLL_THRESHOLD) {
+        if (distanceFromSectionTop <= 20 && scrollY > 0) {
           return false;
         }
         return true;
@@ -246,8 +246,8 @@
       const viewportHeight = window.innerHeight;
       const documentHeight = document.documentElement.scrollHeight;
       const maxScroll = documentHeight - viewportHeight;
-      const isNearTop = scrollY < 50;
-      const isNearBottom = scrollY >= maxScroll - 50;
+      const isNearTop = scrollY < 20;
+      const isNearBottom = scrollY >= maxScroll - 20;
       if (isNearTop && e.deltaY < 0) return;
       if (isNearBottom && e.deltaY > 0) return;
       const now = Date.now();
@@ -269,15 +269,11 @@
             wheelAccumulator = 0;
             scrollToSection(current.index + 1, 'smooth');
           }
+        } else {
+          wheelAccumulator = 0;
         }
       } else if (deltaY < 0) {
-        if (!canScrollInDirection(current, -1)) {
-          if (current.index - 1 >= 0) {
-            e.preventDefault();
-            wheelAccumulator = 0;
-            scrollToSection(current.index - 1, 'smooth');
-          }
-        }
+        wheelAccumulator = 0;
       }
     }
 
