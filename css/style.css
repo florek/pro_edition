@@ -147,9 +147,9 @@ body {
 .header__logo img {
   height: 88px;
   width: auto;
+  max-width: 320px;
   display: block;
-  aspect-ratio: auto;
-  contain: layout style paint;
+  object-fit: contain;
 }
 
 .header__logo-text {
@@ -676,8 +676,7 @@ body.lang-pl [data-lang="en"]:not(.lang-switch__btn) {
   height: auto;
   margin-bottom: 1.5rem;
   filter: drop-shadow(0 0 40px rgba(77, 166, 255, 0.25));
-  aspect-ratio: 360/96;
-  contain: layout style paint;
+  object-fit: contain;
 }
 
 .hero__headline {
@@ -971,6 +970,7 @@ body.lang-pl [data-lang="en"]:not(.lang-switch__btn) {
   display: block;
   margin: 0 auto 2rem;
   opacity: 0.92;
+  object-fit: contain;
 }
 
 .tech-grid {
@@ -1132,8 +1132,10 @@ body.lang-pl [data-lang="en"]:not(.lang-switch__btn) {
 .footer__logo {
   height: 48px;
   width: auto;
+  max-width: 200px;
   margin-bottom: 1rem;
   opacity: 0.8;
+  object-fit: contain;
 }
 
 .footer__copy {
