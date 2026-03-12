@@ -169,14 +169,14 @@ body {
   gap: 2rem;
 }
 
-@media (min-width: 769px) {
+@media (min-width: 1024px) {
   .header__tools {
     flex-shrink: 0;
   }
 
   .nav {
     position: absolute;
-    left: 0;
+    left: 320px;
     right: 12rem;
     top: 0;
     bottom: 0;
@@ -188,6 +188,134 @@ body {
 
   .nav .nav__link {
     pointer-events: auto;
+  }
+}
+
+@media (min-width: 769px) and (max-width: 1023px) {
+  .header__tools {
+    flex-shrink: 0;
+  }
+
+  .nav {
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    width: 280px;
+    max-width: 85vw;
+    flex-direction: column;
+    padding: 5rem 1.5rem 2rem;
+    border-left: 1px solid var(--border);
+    box-shadow: -8px 0 24px rgba(0, 0, 0, 0.2);
+    transform: translateX(100%);
+    transition: transform 0.3s ease;
+    z-index: 9999;
+    isolation: isolate;
+    background-color: #0a0a0f;
+    pointer-events: auto;
+  }
+
+  body.theme-light .nav {
+    background-color: #f0f0f5;
+    backdrop-filter: none;
+  }
+
+  .nav.is-open {
+    transform: translateX(0);
+  }
+
+  .nav__link {
+    font-size: 1.1rem;
+    padding: 0.75rem 0;
+    color: var(--text);
+    position: relative;
+    z-index: 1;
+    display: block;
+    border-bottom: 1px solid var(--border);
+    font-weight: 500;
+  }
+
+  .nav__link.is-active {
+    color: var(--accent-blue);
+  }
+
+  .nav__link.is-active::after {
+    content: '';
+    position: absolute;
+    left: -1.5rem;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 3px;
+    height: 60%;
+    background: var(--accent-blue);
+    border-radius: 0 2px 2px 0;
+  }
+
+  .nav__link:last-of-type {
+    border-bottom: none;
+  }
+
+  .nav__lang-in-drawer {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding-bottom: 1rem;
+    margin-bottom: 1rem;
+    border-bottom: 1px solid var(--border);
+    position: relative;
+    z-index: 1;
+  }
+
+  .nav__lang-label {
+    font-size: 0.9rem;
+    color: var(--text-muted);
+  }
+
+  .lang-switch--header {
+    display: none;
+  }
+
+  body.menu-open .header-wrap {
+    z-index: 10001;
+  }
+
+  .header {
+    z-index: 10000;
+  }
+
+  .burger {
+    display: flex !important;
+  }
+
+  .nav-overlay {
+    display: block;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.5);
+    opacity: 0;
+    z-index: 9998;
+    pointer-events: none;
+    transition: opacity 0.3s ease;
+  }
+
+  body.menu-open .nav-overlay {
+    opacity: 1;
+    pointer-events: auto;
+  }
+
+  body.menu-open .header-wrap {
+    z-index: 10001;
+  }
+
+  .header {
+    z-index: 10000;
+  }
+
+  body.menu-open {
+    overflow: hidden;
   }
 }
 
