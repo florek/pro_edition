@@ -90,6 +90,7 @@
     }
   }
 
+
   (function() {
     const sections = Array.from(document.querySelectorAll('section[id]'));
     const navLinks = Array.from(document.querySelectorAll('.nav__link'));
@@ -172,6 +173,23 @@
     function scrollToSection(index, behavior) {
       if (index < 0 || index >= sections.length) return;
       const section = sections[index];
+      if (section.id === 'hero') {
+        isScrolling = true;
+        window.scrollTo({
+          top: 0,
+          behavior: behavior || 'smooth'
+        });
+        if (behavior === 'smooth') {
+          setTimeout(function() {
+            isScrolling = false;
+            updateActiveNavLink();
+          }, 600);
+        } else {
+          isScrolling = false;
+          updateActiveNavLink();
+        }
+        return;
+      }
       const headerHeight = document.querySelector('.header-wrap')?.offsetHeight || 0;
       const title = section.querySelector('.section__title');
       let targetY;

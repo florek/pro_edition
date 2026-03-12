@@ -138,6 +138,9 @@ body {
   gap: 1rem;
   text-decoration: none;
   color: var(--text);
+  position: relative;
+  z-index: 101;
+  pointer-events: auto;
 }
 
 .header__logo img {
@@ -180,6 +183,11 @@ body {
     justify-content: center;
     align-items: center;
     background: none;
+    pointer-events: none;
+  }
+
+  .nav .nav__link {
+    pointer-events: auto;
   }
 }
 
