@@ -89,4 +89,104 @@
       overlay.addEventListener('click', closeMenu);
     }
   }
+
+  (function() {
+    const sections = Array.from(document.querySelectorAll('section[id]'));
+    if (sections.length === 0) return;
+    let isScrolling = false;
+    let scrollTimeout = null;
+    const SCROLL_THRESHOLD = 50;
+    const SCROLL_DEBOUNCE = 100;
+
+    function getCurrentSection() {
+      const scrollY = window.scrollY || window.pageYOffset;
+      const viewportHeight = window.innerHeight;
+      const scrollBottom = scrollY + viewportHeight;
+      for (let i = 0; i < sections.length; i++) {
+        const section = sections[i];
+        const rect = section.getBoundingClientRect();
+        const sectionTop = rect.top + scrollY;
+        const sectionBottom = sectionTop + rect.height;
+        if (scrollY >= sectionTop - viewportHeight * 0.3 && scrollY < sectionBottom - viewportHeight * 0.3) {
+          return { section: section, index: i, top: sectionTop, bottom: sectionBottom };
+        }
+      }
+      return null;
+    }
+
+    function canScrollDown(current) {
+      if (!current) return false;
+      const scrollY = window.scrollY || window.pageYOffset;
+      const viewportHeight = window.innerHeight;
+      const documentHeight = document.documentElement.scrollHeight;
+      const maxScroll = documentHeight - viewportHeight;
+      const currentScrollBottom = scrollY + viewportHeight;
+      const sectionScrollBottom = current.bottom;
+      return currentScrollBottom < sectionScrollBottom - SCROLL_THRESHOLD && scrollY < maxScroll;
+    }
+
+    function canScrollUp(current) {
+      if (!current) return false;
+      const scrollY = window.scrollY || window.pageYOffset;
+      const sectionScrollTop = current.top;
+      return scrollY > sectionScrollTop + SCROLL_THRESHOLD;
+    }
+
+    function scrollToSection(index, behavior) {
+      if (index < 0 || index >= sections.length) return;
+      const section = sections[index];
+      const rect = section.getBoundingClientRect();
+      const headerHeight = document.querySelector('.header-wrap')?.offsetHeight || 0;
+      const targetY = rect.top + window.scrollY - headerHeight;
+      isScrolling = true;
+      window.scrollTo({
+        top: Math.max(0, targetY),
+        behavior: behavior || 'smooth'
+      });
+      setTimeout(function() {
+        isScrolling = false;
+      }, 500);
+    }
+
+    function handleWheel(e) {
+      if (isScrolling) {
+        e.preventDefault();
+        return;
+      }
+      if (scrollTimeout) {
+        clearTimeout(scrollTimeout);
+      }
+      scrollTimeout = setTimeout(function() {
+        const current = getCurrentSection();
+        if (!current) return;
+        const deltaY = e.deltaY;
+        if (deltaY > 0) {
+          if (!canScrollDown(current)) {
+            e.preventDefault();
+            scrollToSection(current.index + 1, 'smooth');
+          }
+        } else if (deltaY < 0) {
+          if (!canScrollUp(current)) {
+            e.preventDefault();
+            scrollToSection(current.index - 1, 'smooth');
+          }
+        }
+      }, SCROLL_DEBOUNCE);
+    }
+
+    let wheelHandler = null;
+    function initSnapScroll() {
+      if (wheelHandler) {
+        window.removeEventListener('wheel', wheelHandler, { passive: false });
+      }
+      wheelHandler = handleWheel;
+      window.addEventListener('wheel', wheelHandler, { passive: false });
+    }
+
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', initSnapScroll);
+    } else {
+      initSnapScroll();
+    }
+  })();
 })();
