@@ -97,10 +97,25 @@
   <a href="#main-content" class="skip-link"><span data-lang="en">Skip to main content</span><span data-lang="pl">Przejdź do treści</span></a>
   <div class="noise" aria-hidden="true"></div>
   <div class="nav-overlay" id="nav-overlay" aria-hidden="true"></div>
-  <header class="header" role="banner">
-    <a href="#hero" class="header__logo" aria-label="PROEDITION – strona główna, home">
-      <img src="logo.png" alt="PROEDITION – backend systems, APIs and integrations for business" width="320" height="86" fetchpriority="high">
-    </a>
+  <div class="header-wrap">
+    <header class="header" role="banner">
+      <a href="#hero" class="header__logo" aria-label="PROEDITION – strona główna, home">
+        <img src="logo.png" alt="PROEDITION – backend systems, APIs and integrations for business" width="320" height="86" fetchpriority="high">
+      </a>
+      <div class="header__tools">
+        <div class="lang-switch lang-switch--header" role="group" aria-label="Wybierz język / Choose language">
+          <button type="button" class="lang-switch__btn is-active" data-lang="en" aria-pressed="true" title="English">EN</button>
+          <button type="button" class="lang-switch__btn" data-lang="pl" aria-pressed="false" title="Polski">PL</button>
+        </div>
+        <div class="theme-switch" role="group" aria-label="Theme">
+          <button type="button" class="theme-switch__btn" data-theme="dark" aria-pressed="true" title="Dark mode"><span class="theme-switch__icon" aria-hidden="true">◐</span></button>
+          <button type="button" class="theme-switch__btn" data-theme="light" aria-pressed="false" title="Light mode"><span class="theme-switch__icon" aria-hidden="true">☀</span></button>
+        </div>
+        <button class="burger" aria-label="Menu" aria-expanded="false">
+          <span></span><span></span><span></span>
+        </button>
+      </div>
+    </header>
     <nav class="nav" role="navigation" aria-label="Main navigation">
       <div class="nav__lang-in-drawer">
         <span class="nav__lang-label"><span data-lang="en">Language</span><span data-lang="pl">Język</span>:</span>
@@ -113,43 +128,10 @@
       <a href="#experience" class="nav__link"><span data-lang="en">Experience</span><span data-lang="pl">Doświadczenie</span></a>
       <a href="#contact" class="nav__link"><span data-lang="en">Contact</span><span data-lang="pl">Kontakt</span></a>
     </nav>
-    <div class="lang-switch lang-switch--header" role="group" aria-label="Wybierz język / Choose language">
-      <button type="button" class="lang-switch__btn is-active" data-lang="en" aria-pressed="true" title="English">EN</button>
-      <button type="button" class="lang-switch__btn" data-lang="pl" aria-pressed="false" title="Polski">PL</button>
-    </div>
-    <div class="theme-switch" role="group" aria-label="Theme">
-      <button type="button" class="theme-switch__btn" data-theme="dark" aria-pressed="true" title="Dark mode"><span class="theme-switch__icon" aria-hidden="true">◐</span></button>
-      <button type="button" class="theme-switch__btn" data-theme="light" aria-pressed="false" title="Light mode"><span class="theme-switch__icon" aria-hidden="true">☀</span></button>
-    </div>
-    <button class="burger" aria-label="Menu" aria-expanded="false">
-      <span></span><span></span><span></span>
-    </button>
-  </header>
+  </div>
   <main id="main-content" role="main">
     <section class="hero" id="hero" aria-labelledby="hero-headline">
       <div class="hero__bg" aria-hidden="true"></div>
-      <div class="hero__tech-float" aria-hidden="true">
-        <span class="hero__tech-item">Python</span>
-        <span class="hero__tech-item">Django</span>
-        <span class="hero__tech-item">FastAPI</span>
-        <span class="hero__tech-item">PHP</span>
-        <span class="hero__tech-item">Magento</span>
-        <span class="hero__tech-item">REST API</span>
-        <span class="hero__tech-item">ERP</span>
-        <span class="hero__tech-item">WMS</span>
-        <span class="hero__tech-item">CRM</span>
-        <span class="hero__tech-item">e-commerce</span>
-        <span class="hero__tech-item">Backend</span>
-        <span class="hero__tech-item">API</span>
-        <span class="hero__tech-item">Python</span>
-        <span class="hero__tech-item">Django</span>
-        <span class="hero__tech-item">FastAPI</span>
-        <span class="hero__tech-item">Magento</span>
-        <span class="hero__tech-item">REST API</span>
-        <span class="hero__tech-item">Integrations</span>
-        <span class="hero__tech-item">Python</span>
-        <span class="hero__tech-item">Django</span>
-      </div>
       <div class="hero__content">
         <img src="logo.png" alt="PROEDITION – Python backend development and consulting" class="hero__logo" width="360" height="96" fetchpriority="high">
         <h1 class="hero__headline" id="hero-headline"><span data-lang="en">I build modern backend systems, APIs, and integrations for business</span><span data-lang="pl">Tworzę nowoczesne systemy backendowe, API i integracje dla biznesu</span></h1>
@@ -184,6 +166,12 @@
           <p><span data-lang="en">My main areas of expertise include Python, PHP, Django, FastAPI, Magento, REST APIs, backend architecture, systems integration, and technical leadership. I have experience working with e-commerce platforms, B2B systems, ERP-connected environments, and custom business software.</span><span data-lang="pl">Moje główne obszary specjalizacji to Python, PHP, Django, FastAPI, Magento, REST API, architektura backendowa, integracje systemów oraz leadership techniczny. Mam doświadczenie w pracy nad platformami e-commerce, systemami B2B, środowiskami powiązanymi z ERP oraz dedykowanym oprogramowaniem biznesowym.</span></p>
           <p><span data-lang="en">I value clarity, ownership, and responsibility. I do not believe in overengineering for the sake of appearance. I believe in building things that work, make sense, and create real value.</span><span data-lang="pl">Cenię przejrzystość, odpowiedzialność i poczucie właścicielstwa. Nie wierzę w overengineering robiony dla pozoru. Wierzę w budowanie rzeczy, które działają, mają sens i tworzą realną wartość.</span></p>
           <p><span data-lang="en">Through PROEDITION, I help companies turn complex technical challenges into solid and maintainable software solutions.</span><span data-lang="pl">W ramach PROEDITION pomagam firmom zamieniać złożone wyzwania technologiczne w solidne i utrzymywalne rozwiązania programistyczne.</span></p>
+        </div>
+        <h3 class="subsection__title"><span data-lang="en">AI-assisted development</span><span data-lang="pl">AI-assisted development</span></h3>
+        <div class="prose prose--wide">
+          <p><span data-lang="en">I use modern AI tools in my daily development work, but I treat them as support rather than a replacement for engineering.</span><span data-lang="pl">Korzystam z nowoczesnych narzędzi AI w codziennej pracy developerskiej, ale traktuję je jako wsparcie, a nie zastępstwo dla inżynierii.</span></p>
+          <p><span data-lang="en">AI helps me speed up analysis, organize ideas, prepare solution drafts, and improve work with code. At the same time, I do not give up what matters most in software projects: conscious technical decisions, solid architecture, business understanding, code quality, and responsibility for the final result.</span><span data-lang="pl">AI pomaga mi przyspieszać analizę, porządkować pomysły, przygotowywać szkice rozwiązań i usprawniać pracę z kodem. Jednocześnie nie rezygnuję z tego, co w projektach najważniejsze: świadomych decyzji technicznych, dobrej architektury, zrozumienia biznesu, jakości kodu i odpowiedzialności za efekt końcowy.</span></p>
+          <p><span data-lang="en">In practice, this means a pragmatic approach — I use the benefits of AI where it genuinely improves productivity, but always on top of experience, critical thinking, and strong software engineering fundamentals.</span><span data-lang="pl">W praktyce oznacza to podejście pragmatyczne — korzystam z zalet AI tam, gdzie realnie zwiększa produktywność, ale zawsze w oparciu o doświadczenie, krytyczne myślenie i solidne podstawy software engineeringu.</span></p>
         </div>
       </div>
     </section>
