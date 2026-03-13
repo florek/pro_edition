@@ -127,7 +127,7 @@ body {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: var(--space) 2rem;
+  padding: 0.5rem 2rem;
   background: rgba(10, 10, 15, 0.8);
   backdrop-filter: blur(12px);
   border-bottom: 1px solid var(--border);
@@ -145,7 +145,7 @@ body {
 }
 
 .header__logo img {
-  height: 88px;
+  height: 56px;
   width: auto;
   max-width: 320px;
   display: block;
