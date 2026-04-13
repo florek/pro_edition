@@ -18,7 +18,7 @@ Strona PROEDITION – backend systems, APIs and integrations for business (Pytho
 - **Services** – 5 usług ze scope: Backend development, Systems integration, API design, Development and modernization, Technical support and consulting
 - **Who I work with** – typy klientów
 - **The value I deliver** – Business value + Technical value
-- **Technologies** – Backend, Integrations and architecture, Project domains
+- **Technologies** – `technologies.png`, pasek ikon AI/automation (SVG), siatka: Backend, Integrations, AI & automation, Project domains
 - **Portfolio / Experience** – projekty i domeny, role
 - **Why work with me** – 5 punktów
 - **Cooperation model** – B2B, project-based, long-term, consulting

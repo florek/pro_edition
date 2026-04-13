@@ -8,7 +8,7 @@ Strona PROEDITION: przekaz sprzedażowy po angielsku – backend, API, integracj
 
 | Plik / folder | Opis |
 |---------------|------|
-| `index.html` | Jednostronicowa strona (EN): hero, about, services (5), who I work with, value, technologies, experience, why, cooperation, contact |
+| `index.html` | Jednostronicowa strona (EN/PL): hero, about, services (5), AI for business, who I work with, value, technologies, experience, why, cooperation, contact |
 | `css/style.css` | Style globalne, hero (headline/sub/tag), karty usług (scope), listy, value-grid, tech-grid, responsywność |
 | `js/main.js` | Menu mobilne (burger), aria-expanded |
 | `logo.png` | Logotyp PROEDITION (katalog główny) |
@@ -23,7 +23,7 @@ Strona PROEDITION: przekaz sprzedażowy po angielsku – backend, API, integracj
 - **Services:** 5 usług z listami Scope (Backend development, Systems integration, API design, Development and modernization, Technical support and consulting).
 - **Who I work with:** 5 typów firm (produkt cyfrowy, backend, integracje, restrukturyzacja, partner technologiczny).
 - **The value I deliver:** Business value (4 punkty), Technical value (4 punkty).
-- **Technologies:** obraz z logotypami (technologies.png), następnie Backend (Python, Django, FastAPI, REST API); Integrations and architecture; Project domains (e-commerce, ERP, WMS, CRM, custom, B2B).
+- **Technologies:** obraz z logotypami (technologies.png), pod spodem pasek ikon SVG (AI: LLM APIs, Agents, RAG/vectors, Evals & ops, Workflow automation), siatka: Backend; Integrations and architecture; **AI & automation**; Project domains.
 - **Portfolio / Experience:** project and domain experience + Roles (Python Developer, Team Leader, Head of Python Development, technical consultant).
 - **Why work with me:** 5 punktów (inżynier + lider, technologia wspiera biznes, nowe/istniejące projekty, komunikacja i dostawa, brak zbędnej złożoności).
 - **Cooperation model:** B2B, project-based, long-term support, consulting; scope indywidualnie.
